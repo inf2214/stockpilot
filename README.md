@@ -35,3 +35,68 @@ StockPilot es una aplicación web full-stack que centraliza el control de invent
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles. (Añadiremos este archivo más adelante).
+
+## 🗄️ Modelo de Datos
+erDiagram
+    USER ||--o{ STOCK_MOVEMENT : "registra"
+    CATEGORY ||--o{ PRODUCT : "clasifica"
+    SUPPLIER ||--o{ PRODUCT : "suministra"
+    PRODUCT ||--o{ STOCK_MOVEMENT : "tiene"
+
+    USER {
+        uuid id PK
+        string email UK
+        string password
+        string first_name
+        string last_name
+        enum role "ADMIN | SELLER"
+        boolean is_active
+        datetime date_joined
+    }
+
+    CATEGORY {
+        int id PK
+        string name UK
+        text description
+        datetime created_at
+    }
+
+    SUPPLIER {
+        int id PK
+        string name
+        string contact_name
+        string email
+        string phone
+        text address
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+
+    PRODUCT {
+        int id PK
+        string sku UK
+        string name
+        text description
+        int category_id FK
+        int supplier_id FK
+        decimal cost_price
+        decimal sale_price
+        int stock_current
+        int stock_minimum
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+
+    STOCK_MOVEMENT {
+        bigint id PK
+        int product_id FK
+        uuid user_id FK
+        enum movement_type "ENTRY | EXIT"
+        int quantity
+        decimal unit_price
+        string reference
+        text notes
+        datetime created_at
+    }
